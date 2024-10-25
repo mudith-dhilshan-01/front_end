@@ -23,7 +23,7 @@ const Sidebar = () => {
           <span> <Link to="/stock">Stocks</Link></span>
         </li>
         <li className="menu-item">
-          <span>Orders</span>
+          <span> <Link to="/order"> Orders </Link> </span>
         </li>
       </ul>
     </div>
