@@ -67,9 +67,44 @@ function Items(){
             console.log(error);
         }
     }
-            
-       
 
+    const [editItemEditing, setEditItemEditing] = useState<ItemType | null>(null);
+    function editItem(item:ItemType){
+          setEditItemEditing(item);
+          setItemName(item.name);
+          setItemPrice(item.price);
+          setItemDescription(item.description);
+          setItemCategoryId(item.category?.id);  
+    }
+       
+    async function updateItem(){
+        const data={
+            name:itemName,
+            price:itemPrice,
+            description:itemDescription,
+            itemCategoryId:itemCategoryId
+        }
+        try{
+        await axios.put(`http://localhost:8083/items/${editItemEditing?.id}`,data);
+        loadItems();
+        setEditItemEditing(null);
+        setItemName("");
+        setItemPrice(0.0);
+        setItemDescription("");
+        setItemCategoryId(0);
+        }catch(error:any){
+            console.log(error);
+        }
+    }
+
+    async function deleteItem(id:number){
+        try{
+        await axios.delete(`http://localhost:8083/items/${id}`);
+        loadItems();
+        }catch(error:any){
+            console.log(error);
+        }
+    }
 
     return(
         <div className="container mx-auto pt-5 py-4">
@@ -94,19 +129,31 @@ function Items(){
 
                 <div>
                     <label className="text-slate-500 mb-2">Item Category</label>
-                    <select className="w-full border border-slate-300 rounded-lg px-3 py-2 mb-4" onChange={handleItemCategoryId} required>
+                    <select className="w-full border border-slate-300 rounded-lg px-3 py-2 mb-4" value={itemCategoryId} onChange={handleItemCategoryId} required>
                         <option>Select Category</option>
-                        {categories.map(function(category){
-                            return(
+                        {categories.map((category => (
+                            
                                 <option value={category.id}>{category.name}</option>
                             )
-                        })}
+                        ))}
 
                         </select>
                 </div>
+
+                {editItemEditing? (
+                    <>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={updateItem}>Update Item</button>
+                    </>
+                ) : (
+                    <>
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={addItem}>Add Item</button>
+
+                    </>
+                )}
+
+
             </form>
 
-<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={addItem}>Add Item</button>
             
         </div>
 
@@ -114,7 +161,7 @@ function Items(){
             <h1 className="text-3xl font-semibold text-center mb-1 text-slate-100">Items Details</h1>
 
             <table className="table min-w-full border-separate border-spacing-0 border-none text-left">
-                <thead className="bg-slate-200">
+                <thead className="bg-slate-800">
                     <tr>
                         <th className="w-[80px] text-start">Item Id</th>
                         <th className="w-[200px]">Item Name</th>
@@ -132,7 +179,10 @@ function Items(){
                         <td>{items.name}</td>
                         <td>{items.price}</td>
                         <td>{items.description}</td>
-                        <td></td>
+                        <td>
+                            <button onClick={() => editItem(items)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
+                            <button onClick={() => deleteItem(items.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                        </td>
                     </tr>
                 )
             })}

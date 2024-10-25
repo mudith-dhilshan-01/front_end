@@ -1,0 +1,45 @@
+.sidebar {
+    height: 100vh;
+    width: 200px;
+    background-color: #2c2f33;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: sticky; /* Makes the navbar sticky */
+    top: 0;
+    left: 0; /* Sticks the navbar to the top */
+  }
+  
+  .sidebar-header {
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+  }
+  
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .menu-item {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    color: #adb5bd;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .menu-item:hover,
+  .menu-item.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .menu-icon {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
